@@ -1,0 +1,47 @@
+[
+  {
+    "deviceId": "1",
+    "networkInterface": "eth0",
+    "hostname": "localhost"
+  },
+  {
+    "deviceId": "2",
+    "networkInterface": "wlan0",
+    "hostname": "router"
+  },
+  {
+    "deviceId": "3",
+    "networkInterface": "eth1",
+    "hostname": "server"
+  },
+  {
+    "deviceId": "4",
+    "networkInterface": "wlan1",
+    "hostname": "printer"
+  },
+  {
+    "deviceId": "5",
+    "networkInterface": "eth2",
+    "hostname": "nas"
+  },
+  {
+    "deviceId": "6",
+    "networkInterface": "wlan2",
+    "hostname": "switch"
+  },
+  {
+    "deviceId": "7",
+    "networkInterface": "eth3",
+    "hostname": "access point"
+  },
+  {
+    "deviceId": "8",
+    "networkInterface": "wlan3",
+    "hostname": "camera"
+  },
+  {
+    "deviceId": "9",
+    "networkInterface": "eth4",
+    "hostname": "sensor"
+  }
+]
