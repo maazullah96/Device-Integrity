@@ -169,6 +169,8 @@ const DisplayDevice = ({ state }) => {
         <tr key={device.id}>
           <td>{index }</td>
           <td>{device.networkInterface}</td>
+
+          <td>{device.networkInterface}</td>
           <td>{device.hostname}</td>
         </tr>
       ))}
