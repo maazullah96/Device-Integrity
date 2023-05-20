@@ -1,11 +1,15 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.9;
 
 contract DeviceIntegrity {
     struct StaticDevice {
         string networkInterface;
         string hostname;
+        string osArchitecture;
+        string logicalCPU;
+        string osPlatform;
+        string osVersion;
+        string osRelease;
     }
 
     struct DynamicParameters {
@@ -38,6 +42,11 @@ contract DeviceIntegrity {
         bytes memory dna = abi.encodePacked(
             staticParams.networkInterface,
             staticParams.hostname,
+            staticParams.osArchitecture,
+            staticParams.logicalCPU,
+            staticParams.osPlatform,
+            staticParams.osVersion,
+            staticParams.osRelease,
             dynamicParams.availableMemory,
             dynamicParams.cpuUsage
         );
@@ -45,11 +54,13 @@ contract DeviceIntegrity {
         require(
             dynamicParams.availableMemory >= dynamicParams.minAvailableMemory &&
                 dynamicParams.availableMemory <=
-                dynamicParams.maxAvailableMemory
+                dynamicParams.maxAvailableMemory,
+            "Available memory is out of range"
         );
         require(
             dynamicParams.cpuUsage >= dynamicParams.minCpuUsage &&
-                dynamicParams.cpuUsage <= dynamicParams.maxCpuUsage
+                dynamicParams.cpuUsage <= dynamicParams.maxCpuUsage,
+            "CPU usage is out of range"
         );
 
         return keccak256(abi.encodePacked(dna, deviceId));
@@ -62,10 +73,12 @@ contract DeviceIntegrity {
     ) public pure returns (bytes32) {
         bytes memory dna = abi.encodePacked(
             staticParams.networkInterface,
-            staticParams.hostname
-            // ,
-            // dynamicParams.availableMemory,
-            // dynamicParams.cpuUsage
+            staticParams.hostname,
+            staticParams.osArchitecture,
+            staticParams.logicalCPU,
+            staticParams.osPlatform,
+            staticParams.osVersion,
+            staticParams.osRelease
         );
 
         require(
