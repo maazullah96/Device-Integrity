@@ -34,7 +34,7 @@ contract DeviceIntegrity {
 
     DeviceInfo[] devices;
 
-    function generateDeviceDNA(
+    function generateDeviceDNA_old(
         bytes32 deviceId,
         StaticDevice memory staticParams,
         DynamicParameters memory dynamicParams
@@ -66,7 +66,40 @@ contract DeviceIntegrity {
         return keccak256(abi.encodePacked(dna, deviceId));
     }
 
-    function generateDeviceDNA2(
+    function checkDeviceIntegrity_old(
+        bytes32 deviceId,
+        StaticDevice memory staticParams,
+        DynamicParameters memory dynamicParams
+    ) public view returns (bool) {
+        return
+            verifyDeviceDNA(
+                deviceId,
+                generateDeviceDNA_old(deviceId, staticParams, dynamicParams)
+            );
+    }
+
+    function storeDevice_old(
+        bytes32 deviceId,
+        StaticDevice memory staticParams,
+        DynamicParameters memory dynamicParams
+    ) public {
+        require(!deviceExists[deviceId], "Device ID already exists");
+
+        DeviceInfo memory info;
+        info.staticParams = staticParams;
+        info.dynamicParams = dynamicParams;
+        deviceInfo[deviceId] = info;
+        emit Log(info);
+        devices.push(info);
+        deviceDNA[deviceId] = generateDeviceDNA(
+            deviceId,
+            staticParams,
+            dynamicParams
+        );
+        deviceExists[deviceId] = true;
+    }
+
+    function generateDeviceDNA(
         bytes32 deviceId,
         StaticDevice memory staticParams,
         DynamicParameters memory dynamicParams
@@ -112,6 +145,13 @@ contract DeviceIntegrity {
         }
     }
 
+    function verifyDeviceDNA(
+        bytes32 deviceId,
+        bytes32 _deviceDNA
+    ) public view returns (bool) {
+        return _deviceDNA == deviceDNA[deviceId];
+    }
+
     function storeDevice(
         bytes32 deviceId,
         StaticDevice memory staticParams,
@@ -122,6 +162,7 @@ contract DeviceIntegrity {
         DeviceInfo memory info;
         info.staticParams = staticParams;
         info.dynamicParams = dynamicParams;
+
         deviceInfo[deviceId] = info;
         emit Log(info);
         devices.push(info);
@@ -133,48 +174,7 @@ contract DeviceIntegrity {
         deviceExists[deviceId] = true;
     }
 
-    function verifyDeviceDNA(
-        bytes32 deviceId,
-        bytes32 _deviceDNA
-    ) public view returns (bool) {
-        return _deviceDNA == deviceDNA[deviceId];
-    }
-
-    function checkDeviceIntegrity_old(
-        bytes32 deviceId,
-        StaticDevice memory staticParams,
-        DynamicParameters memory dynamicParams
-    ) public view returns (bool) {
-        return
-            verifyDeviceDNA(
-                deviceId,
-                generateDeviceDNA2(deviceId, staticParams, dynamicParams)
-            );
-    }
-
-    function storeDevice_new(
-        bytes32 deviceId,
-        StaticDevice memory staticParams,
-        DynamicParameters memory dynamicParams
-    ) public {
-        require(!deviceExists[deviceId], "Device ID already exists");
-
-        DeviceInfo memory info;
-        info.staticParams = staticParams;
-        info.dynamicParams = dynamicParams;
-
-        deviceInfo[deviceId] = info;
-        emit Log(info);
-        devices.push(info);
-        deviceDNA[deviceId] = generateDeviceDNA2(
-            deviceId,
-            staticParams,
-            dynamicParams
-        );
-        deviceExists[deviceId] = true;
-    }
-
-    function checkDeviceIntegrity_new(
+    function checkDeviceIntegrity(
         bytes32 deviceId,
         StaticDevice memory staticParams,
         DynamicParameters memory dynamicParams
@@ -195,7 +195,7 @@ contract DeviceIntegrity {
         return
             verifyDeviceDNA(
                 deviceId,
-                generateDeviceDNA2(deviceId, staticParams, dynamic_parameter)
+                generateDeviceDNA(deviceId, staticParams, dynamic_parameter)
             );
     }
 

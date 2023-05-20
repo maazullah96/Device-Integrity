@@ -157,23 +157,27 @@ async function main() {
   const deviceId = ethers.utils.formatBytes32String("deviceId");
 
 
-    const staticParams = {
-      networkInterface: "eth0",
-      hostname: "device1",
-    };
-    const dynamicParams = {
-      availableMemory: 8,
-      minAvailableMemory: 4,
-      maxAvailableMemory: 16,
-      cpuUsage: 180,
-      minCpuUsage: 0,
-      maxCpuUsage: 100,
-    };
-  
-    await deviceIntegrity.storeDevice_new(deviceId, staticParams, dynamicParams)
+  const staticParams = {
+    networkInterface: "eth0",
+    hostname: "device1",
+    osArchitecture: "x64",
+    logicalCPU: "Intel i7",
+    osPlatform: "Windows",
+    osVersion: "10.0.19041",
+    osRelease: "21H1"
+  };
+  const dynamicParams = {
+    availableMemory: 8,
+    minAvailableMemory: 4,
+    maxAvailableMemory: 16,
+    cpuUsage: 80,
+    minCpuUsage: 0,
+    maxCpuUsage: 100,
+  };
+    await deviceIntegrity.storeDevice(deviceId, staticParams, dynamicParams)
 
     // await deviceIntegrity.storeDevice_new(deviceId, staticParams, dynamicParams)
-    const isValid1 = await deviceIntegrity.checkDeviceIntegrity_new(
+    const isValid1 = await deviceIntegrity.checkDeviceIntegrity(
         deviceId,
         staticParams,
         dynamicParams

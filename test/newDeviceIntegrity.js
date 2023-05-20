@@ -11,11 +11,17 @@ describe("DeviceIntegrity", function () {
   });
 
   it("should store and retrieve devices", async function () {
+
     const device1 = {
       deviceId: ethers.utils.formatBytes32String("0x01") ,
       staticParams: {
         networkInterface: "eth0",
-        hostname: "device1",
+      hostname: "device1",
+      osArchitecture: "x64",
+      logicalCPU: "Intel i7",
+      osPlatform: "Windows",
+      osVersion: "10.0.19041",
+      osRelease: "21H1"
       },
       dynamicParams: {
         availableMemory: 8,
@@ -32,6 +38,11 @@ describe("DeviceIntegrity", function () {
       staticParams: {
         networkInterface: "eth0",
         hostname: "device2",
+        osArchitecture: "x64",
+        logicalCPU: "Intel i7",
+        osPlatform: "Windows",
+        osVersion: "10.0.19041",
+        osRelease: "21H1"
       },
       dynamicParams: {
         availableMemory: 12,
@@ -43,13 +54,13 @@ describe("DeviceIntegrity", function () {
       },
     };
   
-    await deviceIntegrity.storeDevice_new(
+    await deviceIntegrity.storeDevice(
       device1.deviceId,
       device1.staticParams,
       device1.dynamicParams
     );
   
-    await deviceIntegrity.storeDevice_new(
+    await deviceIntegrity.storeDevice(
       device2.deviceId,
       device2.staticParams,
       device2.dynamicParams
@@ -67,6 +78,11 @@ describe("DeviceIntegrity", function () {
     const staticParams = {
       networkInterface: "eth0",
       hostname: "device1",
+      osArchitecture: "x64",
+      logicalCPU: "Intel i7",
+      osPlatform: "Windows",
+      osVersion: "10.0.19041",
+      osRelease: "21H1"
     };
     const dynamicParams = {
       availableMemory: 8,
@@ -85,47 +101,12 @@ describe("DeviceIntegrity", function () {
         minCpuUsage: 0,
         maxCpuUsage: 100,
       };
-    await deviceIntegrity.storeDevice_new(deviceId, staticParams, dynamicParams)
-    // .send({ from: accounts[0] });
+    await deviceIntegrity.storeDevice(deviceId, staticParams, dynamicParams);
   
-    // const isValid = await deviceIntegrity.checkDeviceIntegrity_new(deviceId, staticParams, dynamicParams)
-    // .call();
+    const isValid = await deviceIntegrity.checkDeviceIntegrity(deviceId, staticParams, dynamicParams);
+    expect(isValid).to.equal(true);
   
-  // Check device integrity
-  const isValid1 = await deviceIntegrity.checkDeviceIntegrity_new(
-    deviceId,
-    staticParams,
-    dynamicParams
-  );
-
-//   const isValid2 = await deviceIntegrity.checkDeviceIntegrity_new(
-//     deviceId,
-//     staticParams,
-//     dynamicParams_1
-//   );
-
-  expect(isValid1).to.equal(true);
-//   expect(isValid2).to.equal(false);
-});
-//   it("should check device integrity", async function () {
-//     const deviceId = "0x01";
-//     const staticParams = {
-//       networkInterface: "eth0",
-//       hostname: "device1",
-//     };
-//     const dynamicParams = {
-//       availableMemory: 8,
-//       minAvailableMemory: 4,
-//       maxAvailableMemory: 16,
-//       cpuUsage: 80,
-//       minCpuUsage: 0,
-//       maxCpuUsage: 100,
-//     };
-
-//     await deviceIntegrity.storeDevice_new(deviceId, staticParams, dynamicParams);
-
-//     const isValid = await deviceIntegrity.checkDeviceIntegrity_new(deviceId, staticParams, dynamicParams);
-
-//     expect(isValid).to.equal(true);
-//   });
+    // const isInvalid = await deviceIntegrity.checkDeviceIntegrity_new(deviceId, staticParams, dynamicParams_1);
+    // expect(isInvalid).to.equal(false);
+  });
 });

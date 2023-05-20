@@ -206,7 +206,15 @@ function App() {
   };
   
   const connectWallet = async (connect) => {
-    const contractAddress = "0x52Fe98A8b20CCB1f7cc1003cdeC3b36D2b2F306D";
+    // console.log(import.meta.env.VITE_SECRET);
+    // to use vite variable 
+    // console.log(` REACT_APP_API_URL ====> ${import.meta.env.VITE_SECRET}`);
+    // console.log(` REACT_APP_API_URL ====> ${import.meta.env.VITE_SECRET}`);
+    // console.log(process.env.REACT_APP_API_URL);
+    // const contractAddress = {process.env.SEPOLIA_CONTRACT_ADDRESS}
+    // console.log(contractAddress)
+    // 
+    const contractAddress = import.meta.env.SEPOLIA_CONTRACT_ADDRESS;
     const contractAddress_Ganache = "0x7eB91E7CBf7B70DCbe6b7829AEb57ce9976750FB";
     const contractABI = abi.abi;
     try {
