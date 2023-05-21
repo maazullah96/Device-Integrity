@@ -199,14 +199,14 @@ function App() {
   });
   const [account, setAccount] = useState("None");
   const [connected, setConnected] = useState(false);
-  const [activeTab, setActiveTab] = useState("display");
+  const [activeTab, setActiveTab] = useState("store");
 
   const handleTabSelect = (eventKey) => {
     setActiveTab(eventKey);
   };
   
   const connectWallet = async (connect) => {
-    // console.log(import.meta.env.VITE_SECRET);
+    console.log(import.meta.env.VITE_SEPOLIA_CONTRACT_ADDRESS);
     // to use vite variable 
     // console.log(` REACT_APP_API_URL ====> ${import.meta.env.VITE_SECRET}`);
     // console.log(` REACT_APP_API_URL ====> ${import.meta.env.VITE_SECRET}`);
@@ -214,7 +214,7 @@ function App() {
     // const contractAddress = {process.env.SEPOLIA_CONTRACT_ADDRESS}
     // console.log(contractAddress)
     // 
-    const contractAddress = import.meta.env.SEPOLIA_CONTRACT_ADDRESS;
+    const contractAddress = import.meta.env.VITE_SEPOLIA_CONTRACT_ADDRESS;
     const contractAddress_Ganache = "0x7eB91E7CBf7B70DCbe6b7829AEb57ce9976750FB";
     const contractABI = abi.abi;
     try {

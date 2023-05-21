@@ -1,4 +1,6 @@
+const { ethers } = require("hardhat");
 const { expect } = require("chai");
+const fs = require("fs");
 
 describe("DeviceIntegrity", function () {
   let DeviceIntegrity;
@@ -108,5 +110,36 @@ describe("DeviceIntegrity", function () {
   
     // const isInvalid = await deviceIntegrity.checkDeviceIntegrity_new(deviceId, staticParams, dynamicParams_1);
     // expect(isInvalid).to.equal(false);
+  });
+
+  it("should store and verify devices from JSON file", async function () {
+    // Load JSON data from the file
+    const jsonData = fs.readFileSync("C:\\Users\\telomere\\Desktop\\Web3\\device-integrity\\dummy_data.json");
+    
+    const parsedData = JSON.parse(jsonData);
+    // console.log()
+    // Store devices on the blockchain
+    await deviceIntegrity.storeDevices(
+      parsedData.map((device) => ethers.utils.formatBytes32String(device.deviceId)),
+      parsedData.map((device) => device.staticParams),
+      parsedData.map((device) => device.dynamicParams)
+    );
+
+    // Verify stored devices
+    devices = await deviceIntegrity.getDevices();
+    expect(devices.length).to.equal(parsedData.length);
+
+    for (let i = 0; i < devices.length; i++) {
+      const storedDevice = devices[i];
+      const expectedDevice = parsedData[i];
+
+      expect(storedDevice.staticParams.networkInterface).to.equal(expectedDevice.staticParams.networkInterface);
+      expect(storedDevice.staticParams.hostname).to.equal(expectedDevice.staticParams.hostname);
+      // Verify other static parameters
+
+      expect(storedDevice.dynamicParams.availableMemory).to.equal(expectedDevice.dynamicParams.availableMemory);
+      expect(storedDevice.dynamicParams.cpuUsage).to.equal(expectedDevice.dynamicParams.cpuUsage);
+      // Verify other dynamic parameters
+    }
   });
 });

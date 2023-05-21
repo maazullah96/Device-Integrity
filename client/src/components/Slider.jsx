@@ -84,7 +84,7 @@ const InputLabel = styled.label`
 `;
 
 export function Slider() {
-  const [values, setValues] = React.useState([15, 50, 80]);
+  // const [values, setValues] = React.useState([15, 50, 80]);
   const [minValue, setMinValue] = React.useState(0);
   const [maxValue, setMaxValue] = React.useState(100);
 

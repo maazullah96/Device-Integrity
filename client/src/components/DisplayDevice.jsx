@@ -134,6 +134,7 @@
 // };
 
 // export default DisplayDevice;
+
 import { useState, useEffect } from "react";
 import { Container, Table,Row,Col ,Card} from "react-bootstrap";
 import { ethers } from "ethers";
@@ -155,25 +156,48 @@ const DisplayDevice = ({ state }) => {
   const tableHeaders = (
     <thead>
       <tr>
-        <th>S.No </th>
+        <th>S.No</th>
         <th>Network Interface</th>
         <th>Hostname</th>
+        <th>OS Architecture</th>
+        <th>Logical CPU</th>
+        <th>OS Platform</th>
+        <th>OS Version</th>
+        <th>OS Release</th>
+        <th>Available Memory</th>
+        <th>Min Available Memory</th>
+        <th>Max Available Memory</th>
+        <th>CPU Usage</th>
+        <th>Min CPU Usage</th>
+        <th>Max CPU Usage</th>
       </tr>
     </thead>
   );
 
-  // Create the table body with data from devices array
   const tableBody = (
     <tbody>
-      {devices.map((device, index) => (
+      {devices.map((device, index) => {
+      console.log(device); // Console log the device object
+      return (
         <tr key={device.id}>
-          <td>{index }</td>
-          <td>{device.networkInterface}</td>
-
-          <td>{device.networkInterface}</td>
-          <td>{device.hostname}</td>
+          <td>{index}</td>
+          <td>{device.staticParams.networkInterface}</td>
+          <td>{device.staticParams.hostname}</td>
+          <td>{device.staticParams.osArchitecture}</td>
+          <td>{device.staticParams.logicalCPU}</td>
+          <td>{device.staticParams.osPlatform}</td>
+          <td>{device.staticParams.osVersion}</td>
+          <td>{device.staticParams.osRelease}</td>
+          <td>{device.dynamicParams.availableMemory.toString()}</td> {/* Convert BigNumber to string */}
+        <td>{device.dynamicParams.minAvailableMemory.toString()}</td> {/* Convert BigNumber to string */}
+        <td>{device.dynamicParams.maxAvailableMemory.toString()}</td> {/* Convert BigNumber to string */}
+        <td>{device.dynamicParams.cpuUsage.toString()}</td> {/* Convert BigNumber to string */}
+        <td>{device.dynamicParams.minCpuUsage.toString()}</td> {/* Convert BigNumber to string */}
+        <td>{device.dynamicParams.maxCpuUsage.toString()}</td> {/* Convert BigNumber to string */}
         </tr>
-      ))}
+      );
+    })}
+      
     </tbody>
   );
 
@@ -190,8 +214,8 @@ const DisplayDevice = ({ state }) => {
       <Row className="justify-content-md-center mt-4">
       {/* <div className="table-responsive">
       </div> */}
- <Col xs={12} md={9}>
-        <Table striped bordered hover 
+ <Col xs={12} md={12}>
+        <Table striped bordered hover responsive 
         // style="display: flex;"
           // style={{ display: "inline-block" }}
           // size="sm"
