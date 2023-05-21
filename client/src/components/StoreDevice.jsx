@@ -122,35 +122,11 @@ const StoreDevice = ({ state }) => {
     return errors;
   };
 
-
-
   const formik = useFormik({
     initialValues,
     onSubmit,
     validate, 
   });
-
-
-  
-  const randomizeValues = () => {
-    const randomString = () =>
-      Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-    formik.setFieldValue('deviceId', randomString());
-    formik.setFieldValue('staticParams.networkInterface', randomString());
-    formik.setFieldValue('staticParams.hostname', randomString());
-    formik.setFieldValue('staticParams.osArchitecture', randomString());
-    formik.setFieldValue('staticParams.logicalCPU', randomString());
-    formik.setFieldValue('staticParams.osPlatform', randomString());
-    formik.setFieldValue('staticParams.osVersion', randomString());
-    formik.setFieldValue('staticParams.osRelease', randomString());
-    formik.setFieldValue('dynamicParams.availableMemory', Math.floor(Math.random() * 100));
-    formik.setFieldValue('dynamicParams.minAvailableMemory', Math.floor(Math.random() * 100));
-    formik.setFieldValue('dynamicParams.maxAvailableMemory', Math.floor(Math.random() * 100));
-    formik.setFieldValue('dynamicParams.cpuUsage', Math.floor(Math.random() * 100));
-    formik.setFieldValue('dynamicParams.minCpuUsage', Math.floor(Math.random() * 100));
-    formik.setFieldValue('dynamicParams.maxCpuUsage', Math.floor(Math.random() * 100));
-  };
 
   return (
     <Container>
@@ -350,12 +326,7 @@ const StoreDevice = ({ state }) => {
                 Error submitting data. Please try again.
               </Alert>
             )}
-     {/* Missing fields alert	
-     {formik.touched && formik.errors && (	
-          <Alert variant="danger" className="mt-3">	
-            Please fill in all required fields.	
-          </Alert>	
-        )} */}
+  
           </Form>
         </Col>
       </Row>
