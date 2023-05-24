@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Form, Button, Card,Alert,Spinner   } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card, Alert, Spinner } from 'react-bootstrap';
 import { ethers } from "ethers";
 
 const VerifyDevice = ({ state }) => {
   const [verificationResult, setVerificationResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [staticParams, setStaticParams] = useState({
     networkInterface: '',
     hostname: '',
@@ -12,18 +13,19 @@ const VerifyDevice = ({ state }) => {
     osPlatform: '',
     osVersion: '',
     osRelease: '',
+    macAddress : '' ,
+    firmwareVersion : '' ,
+    userPassPhrase : '',
+    uuID: ''
   });
   const [dynamicParams, setDynamicParams] = useState({
     availableMemory: 0,
-    minAvailableMemory: 0,
-    maxAvailableMemory: 0,
     cpuUsage: 0,
-    minCpuUsage: 0,
-    maxCpuUsage: 0,
+    cpuPercentage: 0,
+    networkBandwidth: 0,
   });
   const [deviceId, setDeviceId] = useState('');
-
-  // const [hostname, setHostname] = useState("");
+  const [error, setError] = useState(null);
 
   const handleDynamicParamChange = (event) => {
     const { name, value } = event.target;
@@ -40,12 +42,20 @@ const VerifyDevice = ({ state }) => {
       [name]: value,
     }));
   };
-  // const [deviceId, setDeviceId] = useState("");
-  // const [networkInterface, setNetworkInterface] = useState("");
 
   const handleVerify = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setVerificationResult(null);
+    setError(null);
+  
     try {
+      if (!deviceId) {
+        setError("Please enter a valid device ID.");
+        setIsLoading(false);
+        return;
+      }
+  
       const isVerified = await state.contract.checkDeviceIntegrity(
         ethers.utils.formatBytes32String(deviceId),
         staticParams,
@@ -53,41 +63,35 @@ const VerifyDevice = ({ state }) => {
       );
   
       setVerificationResult(isVerified);
-    } catch (error) {
-      console.error(error);
-      setVerificationResult(null);
     }
-    // const staticDevice = {
-    //   networkInterface,
-    //   hostname,
-    // };
-
-    // try {
-    //   const deviceDNA = await state.contract.generateDeviceDNA(
-    //     ethers.utils.formatBytes32String(deviceId),
-    //     staticDevice
-    //   );
-
-    //   const isVerified = await state.contract.verifyDeviceDNA(
-    //     ethers.utils.formatBytes32String(deviceId),
-    //     deviceDNA
-    //   );
-
-    //   setVerificationResult(isVerified);
-    // } catch (error) {
-    //   console.error(error);
-    //   setVerificationResult(null);
-    // }
+    catch (error) {
+      if (error.reason) {
+        // Handle the specific require error reason
+        setError(error.reason);
+      } else {
+        // Handle general error
+        setError("An error occurred during verification.");
+      }
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+
 
   const renderAlert = () => {
     if (verificationResult === true) {
-      return (
+      return ( 
         <Alert variant="success">Verification successful! Device is verified.</Alert>
       );
     } else if (verificationResult === false) {
       return (
         <Alert variant="danger">Verification failed! Device is not verified.</Alert>
+      );
+    } else if (error) {
+      return (
+        <Alert variant="danger">{error}</Alert>
       );
     } else {
       return null;
@@ -98,23 +102,23 @@ const VerifyDevice = ({ state }) => {
     <div>
       {renderAlert()}
       <Form onSubmit={handleVerify}>
-      <Card>
-              <Card.Body>
-                <Row>
-                <Form.Group className="mb-3" controlId="device_id">
-              <Form.Label>Device ID</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter device ID"
-                value={deviceId}
-                onChange={(event) => setDeviceId(event.target.value)}
-              />
-            </Form.Group>
-                </Row>
-              </Card.Body>
-            </Card>
+        <Card>
+          <Card.Body>
+            <Row>
+              <Form.Group className="mb-3" controlId="device_id">
+                <Form.Label>Device ID</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter device ID"
+                  value={deviceId}
+                  onChange={(event) => setDeviceId(event.target.value)}
+                />
+              </Form.Group>
+            </Row>
+          </Card.Body>
+        </Card>
 
-            <Card  className="mt-4">
+                    <Card  className="mt-4">
               <Card.Body>
                 <Card.Title>Static Parameters</Card.Title>
                 <Row>
@@ -151,6 +155,58 @@ const VerifyDevice = ({ state }) => {
                         value={staticParams.logicalCPU}
                         onChange={handleStaticParamChange}
                         name="logicalCPU"
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+
+                <Row>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="macAddress">
+                      <Form.Label>Mac Address</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter Mac Address"
+                        value={staticParams.macAddress}
+                        onChange={handleStaticParamChange}
+                        name="macAddress"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="uuID">
+                      <Form.Label>Device UUID</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter UUID"
+                        value={staticParams.uuID}
+                        onChange={handleStaticParamChange}
+                        name="uuID"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="firmwareVersion">
+                      <Form.Label>FirmWare Version</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter Firmware Version"
+                        value={staticParams.firmwareVersion}
+                        onChange={handleStaticParamChange}
+                        name="firmwareVersion"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="userPassPhrase">
+                      <Form.Label>UserPass Phrase</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter UserPass Phrase"
+                        value={staticParams.userPassPhrase}
+                        onChange={handleStaticParamChange}
+                        name="userPassPhrase"
                       />
                     </Form.Group>
                   </Col>
@@ -211,6 +267,7 @@ const VerifyDevice = ({ state }) => {
               </Card.Body>
             </Card>
 
+        
             <Card className="mt-4">
               <Card.Body>
                 <Card.Title>Dynamic Parameters</Card.Title>
@@ -243,14 +300,54 @@ const VerifyDevice = ({ state }) => {
                   </Col>
                 </Row>
 
+
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="cpu_percentage">
+                      <Form.Label>CPU Percentage</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter CPU Percentage"
+                        value={dynamicParams.CpuPercentage}
+                        onChange={handleDynamicParamChange}
+                        name="cpuPercentage"
+                      />
+                    </Form.Group>
+                  </Col>
+
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="network_bandwidth">
+                      <Form.Label>Network BandWidth</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter Network Bandwidth"
+                        value={dynamicParams.networkBandwidth}
+                        onChange={handleDynamicParamChange}
+                        name="networkBandwidth"
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
               </Card.Body>
             </Card>
-        <Button variant="primary" type="submit">
-          Verify
+
+        <Button variant="primary" type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <div>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              <span className="ms-2">Verifying...</span>
+            </div>
+          ) : (
+            "Verify"
+          )}
         </Button>
       </Form>
-
-      
     </div>
   );
 };

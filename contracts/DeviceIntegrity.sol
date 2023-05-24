@@ -10,15 +10,28 @@ contract DeviceIntegrity {
         string osPlatform;
         string osVersion;
         string osRelease;
+        string macAddress;
+        string firmwareVersion;
+        string userPassPhrase;
+        string uuID;
     }
 
     struct DynamicParameters {
-        uint256 availableMemory;
         uint256 minAvailableMemory;
         uint256 maxAvailableMemory;
-        uint256 cpuUsage;
         uint256 minCpuUsage;
         uint256 maxCpuUsage;
+        uint256 minCpuPercentage;
+        uint256 maxCpuPercentage;
+        uint256 minNetworkBandwidth;
+        uint256 maxNetworkBandwidth;
+    }
+    struct VerifyDynamicParameter{
+        uint256 availableMemory;
+        uint256 cpuUsage;
+        uint256 cpuPercentage;
+        uint256 networkBandwidth;
+
     }
 
     struct DeviceInfo {
@@ -34,10 +47,10 @@ contract DeviceIntegrity {
 
     DeviceInfo[] devices;
 
-    function generateDeviceDNA_old(
+
+    function generateDeviceDNA(
         bytes32 deviceId,
-        StaticDevice memory staticParams,
-        DynamicParameters memory dynamicParams
+        StaticDevice memory staticParams
     ) public pure returns (bytes32) {
         bytes memory dna = abi.encodePacked(
             staticParams.networkInterface,
@@ -47,88 +60,16 @@ contract DeviceIntegrity {
             staticParams.osPlatform,
             staticParams.osVersion,
             staticParams.osRelease,
-            dynamicParams.availableMemory,
-            dynamicParams.cpuUsage
-        );
-
-        require(
-            dynamicParams.availableMemory >= dynamicParams.minAvailableMemory &&
-                dynamicParams.availableMemory <=
-                dynamicParams.maxAvailableMemory,
-            "Available memory is out of range"
-        );
-        require(
-            dynamicParams.cpuUsage >= dynamicParams.minCpuUsage &&
-                dynamicParams.cpuUsage <= dynamicParams.maxCpuUsage,
-            "CPU usage is out of range"
+            staticParams.macAddress,
+            staticParams.firmwareVersion,
+            staticParams.userPassPhrase,
+            staticParams.uuID
         );
 
         return keccak256(abi.encodePacked(dna, deviceId));
     }
-
-    function checkDeviceIntegrity_old(
-        bytes32 deviceId,
-        StaticDevice memory staticParams,
-        DynamicParameters memory dynamicParams
-    ) public view returns (bool) {
-        return
-            verifyDeviceDNA(
-                deviceId,
-                generateDeviceDNA_old(deviceId, staticParams, dynamicParams)
-            );
-    }
-
-    function storeDevice_old(
-        bytes32 deviceId,
-        StaticDevice memory staticParams,
-        DynamicParameters memory dynamicParams
-    ) public {
-        require(!deviceExists[deviceId], "Device ID already exists");
-
-        DeviceInfo memory info;
-        info.staticParams = staticParams;
-        info.dynamicParams = dynamicParams;
-        deviceInfo[deviceId] = info;
-        emit Log(info);
-        devices.push(info);
-        deviceDNA[deviceId] = generateDeviceDNA(
-            deviceId,
-            staticParams,
-            dynamicParams
-        );
-        deviceExists[deviceId] = true;
-    }
-
-    function generateDeviceDNA(
-        bytes32 deviceId,
-        StaticDevice memory staticParams,
-        DynamicParameters memory dynamicParams
-    ) public pure returns (bytes32) {
-        bytes memory dna = abi.encodePacked(
-            staticParams.networkInterface,
-            staticParams.hostname,
-            staticParams.osArchitecture,
-            staticParams.logicalCPU,
-            staticParams.osPlatform,
-            staticParams.osVersion,
-            staticParams.osRelease
-        );
-
-        require(
-            dynamicParams.availableMemory >= dynamicParams.minAvailableMemory &&
-                dynamicParams.availableMemory <=
-                dynamicParams.maxAvailableMemory,
-            "Available memory is out of range"
-        );
-        require(
-            dynamicParams.cpuUsage >= dynamicParams.minCpuUsage &&
-                dynamicParams.cpuUsage <= dynamicParams.maxCpuUsage,
-            "CPU usage is out of range"
-        );
-
-        return keccak256(abi.encodePacked(dna, deviceId));
-    }
-
+    
+    //for json
     function storeDevices(
         bytes32[] memory deviceIds,
         StaticDevice[] memory staticParams,
@@ -162,14 +103,13 @@ contract DeviceIntegrity {
         DeviceInfo memory info;
         info.staticParams = staticParams;
         info.dynamicParams = dynamicParams;
-
+        // being saved into blockchain
         deviceInfo[deviceId] = info;
         emit Log(info);
         devices.push(info);
         deviceDNA[deviceId] = generateDeviceDNA(
             deviceId,
-            staticParams,
-            dynamicParams
+            staticParams
         );
         deviceExists[deviceId] = true;
     }
@@ -177,25 +117,39 @@ contract DeviceIntegrity {
     function checkDeviceIntegrity(
         bytes32 deviceId,
         StaticDevice memory staticParams,
-        DynamicParameters memory dynamicParams
+        VerifyDynamicParameter memory verifydynamicParams
     ) public view returns (bool) {
         require(deviceExists[deviceId], "Device ID does not exist");
 
         DeviceInfo memory stored_device_info = deviceInfo[deviceId];
-        DynamicParameters memory dynamic_parameter;
-        dynamic_parameter = DynamicParameters(
-            dynamicParams.availableMemory,
-            stored_device_info.dynamicParams.minAvailableMemory,
-            stored_device_info.dynamicParams.maxAvailableMemory,
-            dynamicParams.cpuUsage,
-            stored_device_info.dynamicParams.minCpuUsage,
-            stored_device_info.dynamicParams.maxCpuUsage
+        //DynamicParameters memory dynamic_parameter;
+
+         require(
+            verifydynamicParams.availableMemory >= stored_device_info.dynamicParams.minAvailableMemory &&
+                verifydynamicParams.availableMemory <=
+                stored_device_info.dynamicParams.maxAvailableMemory,
+            "Available memory is out of range"
+        );
+        require(
+            verifydynamicParams.cpuUsage >= stored_device_info.dynamicParams.minCpuUsage &&
+                verifydynamicParams.cpuUsage <= stored_device_info.dynamicParams.maxCpuUsage,
+            "CPU usage is out of range"
+        );
+        require(
+            verifydynamicParams.cpuPercentage >= stored_device_info.dynamicParams.minCpuPercentage &&
+                verifydynamicParams.cpuPercentage <= stored_device_info.dynamicParams.maxCpuPercentage,
+            "CPU percentage is out of range"
+        );
+        require(
+            verifydynamicParams.networkBandwidth >= stored_device_info.dynamicParams.minNetworkBandwidth &&
+                verifydynamicParams.networkBandwidth <= stored_device_info.dynamicParams.maxNetworkBandwidth,
+            "NW bandwidth is out of range"
         );
 
         return
             verifyDeviceDNA(
                 deviceId,
-                generateDeviceDNA(deviceId, staticParams, dynamic_parameter)
+                generateDeviceDNA(deviceId, staticParams)
             );
     }
 

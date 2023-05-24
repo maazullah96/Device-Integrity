@@ -1,0 +1,202 @@
+[
+    {
+      "deviceId": "0x987654",
+      "staticParams": {
+        "networkInterface": "eth2",
+        "hostname": "device3",
+        "osArchitecture": "aarch64",
+        "logicalCPU": "2",
+        "osPlatform": "macOS",
+        "osVersion": "11.4",
+        "osRelease": "MacOS Big Sur",
+        "macAddress": "11:22:33:44:55:66",
+        "firmwareVersion": "3.2.0",
+        "userPassPhrase": "mySecurePassword123"
+      },
+      "dynamicParams": {
+        "minAvailableMemory": 512,
+        "maxAvailableMemory": 8192,
+        "minCpuUsage": 20,
+        "maxCpuUsage": 70,
+        "minCpuPercentage": 15,
+        "maxCpuPercentage": 75,
+        "minNetworkBandwidth": 200,
+        "maxNetworkBandwidth": 1500
+      }
+    },
+    {
+      "deviceId": "0xabcdef123",
+      "staticParams": {
+        "networkInterface": "wlan0",
+        "hostname": "device4",
+        "osArchitecture": "x86",
+        "logicalCPU": "8",
+        "osPlatform": "Windows",
+        "osVersion": "11.0.22000",
+        "osRelease": "Windows 11",
+        "macAddress": "AA:BB:CC:DD:EE:FF",
+        "firmwareVersion": "4.5.2",
+        "userPassPhrase": "password123"
+      },
+      "dynamicParams": {
+        "minAvailableMemory": 2048,
+        "maxAvailableMemory": 32768,
+        "minCpuUsage": 5,
+        "maxCpuUsage": 90,
+        "minCpuPercentage": 10,
+        "maxCpuPercentage": 85,
+        "minNetworkBandwidth": 500,
+        "maxNetworkBandwidth": 2000
+      }
+    },
+    {
+      "deviceId": "0x123abc",
+      "staticParams": {
+        "networkInterface": "eth0",
+        "hostname": "device5",
+        "osArchitecture": "armv7l",
+        "logicalCPU": "4",
+        "osPlatform": "Linux",
+        "osVersion": "4.19.0",
+        "osRelease": "Debian 10",
+        "macAddress": "AA:11:BB:22:CC:33",
+        "firmwareVersion": "1.1.0",
+        "userPassPhrase": "myPass123!"
+      },
+      "dynamicParams": {
+        "minAvailableMemory": 1024,
+        "maxAvailableMemory": 16384,
+        "minCpuUsage": 10,
+        "maxCpuUsage": 80,
+        "minCpuPercentage": 5,
+        "maxCpuPercentage": 95,
+        "minNetworkBandwidth": 100,
+        "maxNetworkBandwidth": 1000
+      }
+    },
+    {
+      "deviceId": "0x789abc",
+      "staticParams": {
+        "networkInterface": "eth1",
+        "hostname": "device6",
+        "osArchitecture": "x86_64",
+        "logicalCPU": "8",
+        "osPlatform": "Windows",
+        "osVersion": "10.0.19042",
+        "osRelease": "Windows 10",
+        "macAddress": "BB:22:AA:33:CC:44",
+        "firmwareVersion": "2.2.1",
+        "userPassPhrase": "securePass456"
+      },
+      "dynamicParams": {
+        "minAvailableMemory": 2048,
+        "maxAvailableMemory": 32768,
+        "minCpuUsage": 5,
+        "maxCpuUsage": 90,
+        "minCpuPercentage": 10,
+        "maxCpuPercentage": 85,
+        "minNetworkBandwidth": 500,
+        "maxNetworkBandwidth": 2000
+      }
+    },
+    {
+      "deviceId": "0x456def",
+      "staticParams": {
+        "networkInterface": "eth2",
+        "hostname": "device7",
+        "osArchitecture": "aarch64",
+        "logicalCPU": "4",
+        "osPlatform": "macOS",
+        "osVersion": "11.4",
+        "osRelease": "MacOS Big Sur",
+        "macAddress": "33:44:55:66:77:88",
+        "firmwareVersion": "3.1.0",
+        "userPassPhrase": "mySecurePassword789"
+      },
+      "dynamicParams": {
+        "minAvailableMemory": 512,
+        "maxAvailableMemory": 8192,
+        "minCpuUsage": 20,
+        "maxCpuUsage": 70,
+        "minCpuPercentage": 15,
+        "maxCpuPercentage": 75,
+        "minNetworkBandwidth": 200,
+        "maxNetworkBandwidth": 1500
+      }
+    },
+    {
+      "deviceId": "0xabcdef456",
+      "staticParams": {
+        "networkInterface": "wlan0",
+        "hostname": "device8",
+        "osArchitecture": "x86",
+        "logicalCPU": "8",
+        "osPlatform": "Windows",
+        "osVersion": "11.0.22000",
+        "osRelease": "Windows 11",
+        "macAddress": "DD:EE:FF:11:22:33",
+        "firmwareVersion": "4.3.2",
+        "userPassPhrase": "passphrase789"
+      },
+      "dynamicParams": {
+        "minAvailableMemory": 2048,
+        "maxAvailableMemory": 32768,
+        "minCpuUsage": 5,
+        "maxCpuUsage": 90,
+        "minCpuPercentage": 10,
+        "maxCpuPercentage": 85,
+        "minNetworkBandwidth": 500,
+        "maxNetworkBandwidth": 2000
+      }
+    },
+    {
+      "deviceId": "0x789def",
+      "staticParams": {
+        "networkInterface": "eth0",
+        "hostname": "device9",
+        "osArchitecture": "armv7l",
+        "logicalCPU": "4",
+        "osPlatform": "Linux",
+        "osVersion": "4.19.0",
+        "osRelease": "Debian 10",
+        "macAddress": "22:33:44:55:66:77",
+        "firmwareVersion": "1.0.2",
+        "userPassPhrase": "password987!"
+      },
+      "dynamicParams": {
+        "minAvailableMemory": 1024,
+        "maxAvailableMemory": 16384,
+        "minCpuUsage": 10,
+        "maxCpuUsage": 80,
+        "minCpuPercentage": 5,
+        "maxCpuPercentage": 95,
+        "minNetworkBandwidth": 100,
+        "maxNetworkBandwidth": 1000
+      }
+    },
+    {
+      "deviceId": "0x123456789",
+      "staticParams": {
+        "networkInterface": "eth1",
+        "hostname": "device10",
+        "osArchitecture": "x86_64",
+        "logicalCPU": "8",
+        "osPlatform": "Windows",
+        "osVersion": "10.0.19042",
+        "osRelease": "Windows 10",
+        "macAddress": "CC:DD:EE:FF:11:22",
+        "firmwareVersion": "2.1.0",
+        "userPassPhrase": "securePass789"
+      },
+      "dynamicParams": {
+        "minAvailableMemory": 2048,
+        "maxAvailableMemory": 32768,
+        "minCpuUsage": 5,
+        "maxCpuUsage": 90,
+        "minCpuPercentage": 10,
+        "maxCpuPercentage": 85,
+        "minNetworkBandwidth": 500,
+        "maxNetworkBandwidth": 2000
+      }
+    }
+  ]

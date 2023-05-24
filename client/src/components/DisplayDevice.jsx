@@ -1,140 +1,3 @@
-// import { useState, useEffect } from "react";
-// const DisplayDevice = ({ state }) => {
-//   const [devices, setDevices] = useState([]);
-//   const { contract } = state;
-
-//   useEffect(() => {
-//     const devicesMessage = async () => {
-//       const devices = await contract.getDevices();
-//       setDevices(devices);
-//     };
-//     contract && devicesMessage();
-//   }, [contract]);
-
-//   return (
-//     <>
-//       <p style={{ textAlign: "center", marginTop: "20px" }}>Devices</p>
-//       {devices.map((device) => {
-//         return (
-//           <div
-//             className="container-fluid"
-//             style={{ width: "100%" }}
-//             key={Math.random()}
-//           >
-//             <table
-//               style={{
-//                 marginBottom: "10px",
-//               }}
-//             >
-//               <tbody>
-//                 <tr>
-//                   <td
-//                     style={{
-//                       backgroundColor: "#96D4D4",
-//                       border: "1px solid white",
-//                       borderCollapse: "collapse",
-//                       padding: "7px",
-//                       width: "100px",
-//                     }}
-//                   >
-//                     {device.networkInterface}
-//                   </td>
-                 
-//                   <td
-//                     style={{
-//                       backgroundColor: "#96D4D4",
-//                       border: "1px solid white",
-//                       borderCollapse: "collapse",
-//                       padding: "7px",
-//                       width: "300px",
-//                     }}
-//                   >
-//                     {device.hostname}
-//                   </td>
-//                   {/* <td
-//                     style={{
-//                       backgroundColor: "#96D4D4",
-//                       border: "1px solid white",
-//                       borderCollapse: "collapse",
-//                       padding: "7px",
-//                       width: "400px",
-//                     }}
-//                   >
-//                     {memo.from}
-//                   </td> */}
-//                 </tr>
-//               </tbody>
-//             </table>
-//           </div>
-//         );
-//       })}
-//     </>
-//   );
-// };
-// export default DisplayDevice;
-
-
-
-// import { useState, useEffect } from "react";
-// // import { Grid, Table, TableBody,  TableContainer, TableHead,  Paper } from "@mui/material";
-// import { Grid, Table, TableBody} from "@mui/material";
-
-// const DisplayDevice = ({ state }) => {
-//   const [devices, setDevices] = useState([]);
-//   const { contract } = state;
-
-//   useEffect(() => {
-//     const devicesMessage = async () => {
-//       const devices = await contract.getDevices();
-//       setDevices(devices);
-//     };
-//     contract && devicesMessage();
-//   }, [contract]);
-
-  
-
-  
-  
-
-
-//   return (
-//     <>
-//       <p style={{ textAlign: "center", marginTop: "20px" }}>Devices</p>
-//       <Grid container spacing={1}>
-//         {devices.map((device) => {
-//           return (
-//             <Grid item xs={12} md={6} lg={4}>
-//               <TableContainer >
-//                 <Table  aria-label="simple table">
-//                   <TableHead>
-//                     <StyledTableRow>
-//                       <StyledTableCell>Network Interface</StyledTableCell>
-//                       <StyledTableCell align="right">Hostname</StyledTableCell>
-//                     </StyledTableRow>
-//                   </TableHead>
-//                   <TableBody>
-//                     <StyledTableRow
-//                       key={device.id}
-//                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-//                     >
-//                       <StyledTableCell component="th" scope="row">
-//                         {device.networkInterface}
-//                       </StyledTableCell>
-//                       <StyledTableCell align="right">{device.hostname}</StyledTableCell>
-//                     </StyledTableRow>
-//                   </TableBody>
-//                 </Table>
-//               </TableContainer>
-//             </Grid>
-//           );
-//         })}
-//       </Grid>
-//     </>
-//   );
-// };
-
-// export default DisplayDevice;
-
 import { useState, useEffect } from "react";
 import { Container, Table,Row,Col ,Card} from "react-bootstrap";
 import { ethers } from "ethers";
@@ -164,12 +27,23 @@ const DisplayDevice = ({ state }) => {
         <th>OS Platform</th>
         <th>OS Version</th>
         <th>OS Release</th>
-        <th>Available Memory</th>
+        <th>Mac Address</th>
+        <th>FirmWare Address</th>
+        <th>UserPass Phrase</th>
+        <th>Device UUID</th>
+        {/* <th>Available Memory</th> */}
         <th>Min Available Memory</th>
         <th>Max Available Memory</th>
-        <th>CPU Usage</th>
+        {/* <th>CPU Usage</th> */}
         <th>Min CPU Usage</th>
         <th>Max CPU Usage</th>
+
+        <th>Min CPU Percentage </th>
+        <th>Max CPU Percentage </th>        
+
+        <th>Min Network BandWidth</th>
+        <th>Max Network BandWidth</th>
+
       </tr>
     </thead>
   );
@@ -188,12 +62,23 @@ const DisplayDevice = ({ state }) => {
           <td>{device.staticParams.osPlatform}</td>
           <td>{device.staticParams.osVersion}</td>
           <td>{device.staticParams.osRelease}</td>
-          <td>{device.dynamicParams.availableMemory.toString()}</td> {/* Convert BigNumber to string */}
+          <td>{device.staticParams.macAddress}</td>
+          <td>{device.staticParams.firmwareVersion}</td>
+          <td>{device.staticParams.userPassPhrase}</td>
+          <td>{device.staticParams.uuID}</td>
+          {/* <td>{device.dynamicParams.availableMemory.toString()}</td> Convert BigNumber to string */}
         <td>{device.dynamicParams.minAvailableMemory.toString()}</td> {/* Convert BigNumber to string */}
         <td>{device.dynamicParams.maxAvailableMemory.toString()}</td> {/* Convert BigNumber to string */}
-        <td>{device.dynamicParams.cpuUsage.toString()}</td> {/* Convert BigNumber to string */}
+        {/* <td>{device.dynamicParams.cpuUsage.toString()}</td> Convert BigNumber to string */}
         <td>{device.dynamicParams.minCpuUsage.toString()}</td> {/* Convert BigNumber to string */}
         <td>{device.dynamicParams.maxCpuUsage.toString()}</td> {/* Convert BigNumber to string */}
+
+        <td>{device.dynamicParams.minCpuPercentage.toString()}</td> {/* Convert BigNumber to string */}
+        <td>{device.dynamicParams.maxCpuPercentage.toString()}</td> {/* Convert BigNumber to string */}
+
+        <td>{device.dynamicParams.minNetworkBandwidth.toString()}</td> {/* Convert BigNumber to string */}
+        <td>{device.dynamicParams.maxNetworkBandwidth.toString()}</td> {/* Convert BigNumber to string */}
+
         </tr>
       );
     })}

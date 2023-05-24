@@ -283,7 +283,7 @@ function App() {
     <div>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand>My App</Navbar.Brand>
+          <Navbar.Brand>Pi Integrity Verification System</Navbar.Brand>
           <Nav className="me-auto">
             <Button variant="outline-light" onClick={() => {
               setConnected(!connected);

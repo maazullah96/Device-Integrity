@@ -1,0 +1,182 @@
+[
+  {
+    "deviceId": "0x123456",
+    "staticParams": {
+      "networkInterface": "eth0",
+      "hostname": "device1",
+      "osArchitecture": "x86_64",
+      "logicalCPU": "4",
+      "osPlatform": "Linux",
+      "osVersion": "2.6.32",
+      "osRelease": "Ubuntu 18.04"
+    },
+    "dynamicParams": {
+      "minAvailableMemory": 1024,
+      "maxAvailableMemory": 16384,
+      "minCpuUsage": 10,
+      "maxCpuUsage": 80
+    }
+  },
+  {
+    "deviceId": "0x789abc",
+    "staticParams": {
+      "networkInterface": "wlan0",
+      "hostname": "device2",
+      "osArchitecture": "arm64",
+      "logicalCPU": "8",
+      "osPlatform": "Windows",
+      "osVersion": "10.0.19043",
+      "osRelease": "Windows 10"
+    },
+    "dynamicParams": {
+      "minAvailableMemory": 2048,
+      "maxAvailableMemory": 8192,
+      "minCpuUsage": 20,
+      "maxCpuUsage": 70
+    }
+  },
+  {
+    "deviceId": "0xdef012",
+    "staticParams": {
+      "networkInterface": "eth1",
+      "hostname": "device3",
+      "osArchitecture": "aarch64",
+      "logicalCPU": "2",
+      "osPlatform": "macOS",
+      "osVersion": "11.6.1",
+      "osRelease": "macOS Big Sur"
+    },
+    "dynamicParams": {
+      "minAvailableMemory": 1024,
+      "maxAvailableMemory": 4096,
+      "minCpuUsage": 10,
+      "maxCpuUsage": 50
+    }
+  },
+  {
+    "deviceId": "0x456def",
+    "staticParams": {
+      "networkInterface": "eth2",
+      "hostname": "device4",
+      "osArchitecture": "x86_64",
+      "logicalCPU": "6",
+      "osPlatform": "Linux",
+      "osVersion": "4.19.128",
+      "osRelease": "Debian 10"
+    },
+    "dynamicParams": {
+      "minAvailableMemory": 2048,
+      "maxAvailableMemory": 12288,
+      "minCpuUsage": 20,
+      "maxCpuUsage": 60
+    }
+  },
+  {
+    "deviceId": "0x789012",
+    "staticParams": {
+      "networkInterface": "wlan1",
+      "hostname": "device5",
+      "osArchitecture": "armv7l",
+      "logicalCPU": "4",
+      "osPlatform": "Raspbian",
+      "osVersion": "10.7",
+      "osRelease": "Raspbian GNU/Linux 10 (buster)"
+    },
+    "dynamicParams": {
+      "minAvailableMemory": 512,
+      "maxAvailableMemory": 2048,
+      "minCpuUsage": 5,
+      "maxCpuUsage": 30
+    }
+  },
+  {
+    "deviceId": "0xcdef01",
+    "staticParams": {
+      "networkInterface": "eth0",
+      "hostname": "device6",
+      "osArchitecture": "x86_64",
+      "logicalCPU": "8",
+      "osPlatform": "Windows",
+      "osVersion": "11.0.22000",
+      "osRelease": "Windows 11"
+    },
+    "dynamicParams": {
+      "minAvailableMemory": 8192,
+      "maxAvailableMemory": 32768,
+      "minCpuUsage": 50,
+      "maxCpuUsage": 90
+    }
+  },
+  {
+    "deviceId": "0x012345",
+    "staticParams": {
+      "networkInterface": "wlan0",
+      "hostname": "device7",
+      "osArchitecture": "arm64",
+      "logicalCPU": "4",
+      "osPlatform": "Linux",
+      "osVersion": "5.10.0",
+      "osRelease": "Ubuntu 20.04"
+    },
+    "dynamicParams": {
+      "minAvailableMemory": 4096,
+      "maxAvailableMemory": 16384,
+      "minCpuUsage": 30,
+      "maxCpuUsage": 80
+    }
+  },
+  {
+    "deviceId": "0x6789ab",
+    "staticParams": {
+      "networkInterface": "eth1",
+      "hostname": "device8",
+      "osArchitecture": "aarch64",
+      "logicalCPU": "2",
+      "osPlatform": "macOS",
+      "osVersion": "12.1",
+      "osRelease": "macOS Monterey"
+    },
+    "dynamicParams": {
+      "minAvailableMemory": 2048,
+      "maxAvailableMemory": 8192,
+      "minCpuUsage": 10,
+      "maxCpuUsage": 50
+    }
+  },
+  {
+    "deviceId": "0xabcdef",
+    "staticParams": {
+      "networkInterface": "eth0",
+      "hostname": "device9",
+      "osArchitecture": "x86_64",
+      "logicalCPU": "6",
+      "osPlatform": "Linux",
+      "osVersion": "4.15.0",
+      "osRelease": "CentOS 7"
+    },
+    "dynamicParams": {
+      "minAvailableMemory": 2048,
+      "maxAvailableMemory": 8192,
+      "minCpuUsage": 20,
+      "maxCpuUsage": 60
+    }
+  },
+  {
+    "deviceId": "0x234567",
+    "staticParams": {
+      "networkInterface": "wlan0",
+      "hostname": "device10",
+      "osArchitecture": "armv7l",
+      "logicalCPU": "4",
+      "osPlatform": "Raspbian",
+      "osVersion": "11.1",
+      "osRelease": "Raspbian GNU/Linux 11 (bullseye)"
+    },
+    "dynamicParams": {
+      "minAvailableMemory": 1024,
+      "maxAvailableMemory": 4096,
+      "minCpuUsage": 10,
+      "maxCpuUsage": 50
+    }
+  }
+]

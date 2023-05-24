@@ -15,14 +15,20 @@ const StoreDevice = ({ state }) => {
       osPlatform: '',
       osVersion: '',
       osRelease: '',
+      macAddress : '' ,
+      firmwareVersion : '' ,
+      userPassPhrase : '',
+      uuID: ''
     },
     dynamicParams: {
-      availableMemory: 0,
       minAvailableMemory: 0,
       maxAvailableMemory: 0,
-      cpuUsage: 0,
       minCpuUsage: 0,
       maxCpuUsage: 0,
+      minCpuPercentage: 0,
+      maxCpuPercentage: 0,
+      minNetworkBandwidth: 0,
+      maxNetworkBandwidth: 0,
     },
   };
   const [submitting, setSubmitting] = useState(false);
@@ -86,18 +92,26 @@ const StoreDevice = ({ state }) => {
     if (!values.staticParams.osVersion) {
       errors.staticParams.osVersion = 'OS Version is required';
     }
-  
     if (!values.staticParams.osRelease) {
       errors.staticParams.osRelease = 'OS Release is required';
     }
   
+    if (!values.staticParams.macAddress) {
+      errors.staticParams.macAddress = 'macAddress   is required';
+    }
+    if (!values.staticParams.firmwareVersion) {
+      errors.staticParams.firmwareVersion = 'firmwareVersion is required';
+    }
+    if (!values.staticParams.userPassPhrase) {
+      errors.staticParams.userPassPhrase = 'user PassPhrase  is required';
+    }
+    if (!values.staticParams.uuID) {
+      errors.staticParams.uuID = 'uuID  is required';
+    }
     if (!values.dynamicParams) {
       errors.dynamicParams = {};
     }
   
-    if (!values.dynamicParams.availableMemory) {
-      errors.dynamicParams.availableMemory = 'Available Memory is required';
-    }
   
     if (!values.dynamicParams.minAvailableMemory) {
       errors.dynamicParams.minAvailableMemory = 'Minimum Available Memory is required';
@@ -107,9 +121,7 @@ const StoreDevice = ({ state }) => {
       errors.dynamicParams.maxAvailableMemory = 'Maximum Available Memory is required';
     }
   
-    if (!values.dynamicParams.cpuUsage) {
-      errors.dynamicParams.cpuUsage = 'CPU Usage is required';
-    }
+  
   
     if (!values.dynamicParams.minCpuUsage) {
       errors.dynamicParams.minCpuUsage = 'Minimum CPU Usage is required';
@@ -117,6 +129,20 @@ const StoreDevice = ({ state }) => {
   
     if (!values.dynamicParams.maxCpuUsage) {
       errors.dynamicParams.maxCpuUsage = 'Maximum CPU Usage is required';
+    }
+    if (!values.dynamicParams.minCpuPercentage) {
+      errors.dynamicParams.minCpuPercentage = 'Minimum Cpu Percentage is required';
+    }
+
+    if (!values.dynamicParams.maxCpuPercentage) {
+      errors.dynamicParams.maxCpuPercentage = 'Maximum CPU Percentage is required';
+    }
+    
+    if (!values.dynamicParams.minNetworkBandwidth) {
+      errors.dynamicParams.minNetworkBandwidth = 'Minimum Network Bandwidth is required';
+    }
+    if (!values.dynamicParams.maxNetworkBandwidth) {
+      errors.dynamicParams.maxNetworkBandwidth = 'Maximum Network Bandwidth is required';
     }
   
     return errors;
@@ -153,7 +179,7 @@ const StoreDevice = ({ state }) => {
               <Card.Body>
                 <Card.Title>Static Parameters</Card.Title>
                 <Row>
-                  <Col md={4}>
+                  <Col md={3}>
                     <Form.Group className="mb-3" controlId="network_interface">
                       <Form.Label>Network Interface</Form.Label>
                       <Form.Control
@@ -163,7 +189,7 @@ const StoreDevice = ({ state }) => {
                       />
                     </Form.Group>
                   </Col>
-                  <Col md={4}>
+                  <Col md={3}>
                     <Form.Group className="mb-3" controlId="host_name">
                       <Form.Label>Host Name</Form.Label>
                       <Form.Control
@@ -175,7 +201,7 @@ const StoreDevice = ({ state }) => {
                   </Col>
                   <Col md={3}>
                     <Form.Group className="mb-3" controlId="logical_cpu">
-                      <Form.Label>Logical CPU</Form.Label>
+                      <Form.Label>Logical CPU Threads</Form.Label>
                       <Form.Control
                         type="text"
                         placeholder="Enter logical CPU"
@@ -183,8 +209,49 @@ const StoreDevice = ({ state }) => {
                       />
                     </Form.Group>
                   </Col>
+                  <Col md={3}>
+                    <Form.Group className="mb-3" controlId="uuID">
+                      <Form.Label>DeviceUUID</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter UUID"
+                        {...formik.getFieldProps('staticParams.uuID')}
+                      />
+                    </Form.Group>
+                  </Col>
                 </Row>
-
+                <Row>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="macAddress">
+                      <Form.Label>Mac Address</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter Mac Address"
+                        {...formik.getFieldProps('staticParams.macAddress')}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="firmwareVersion">
+                      <Form.Label>FirmWare Version</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter Firmware Version"
+                        {...formik.getFieldProps('staticParams.firmwareVersion')}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="userPassPhrase">
+                      <Form.Label>UserPass Phrase</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter UserPass Phrase"
+                        {...formik.getFieldProps('staticParams.userPassPhrase')}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
                 <Row>
                   <Col md={3}>
                     <Form.Group className="mb-3" controlId="os_architecture">
@@ -245,16 +312,7 @@ const StoreDevice = ({ state }) => {
                       />
                     </Form.Group>
                   </Col>
-                  <Col md={4}>
-                    <Form.Group className="mb-3" controlId="available_memory">
-                      <Form.Label>Available Memory</Form.Label>
-                      <Form.Control
-                        type="number"
-                        placeholder="Enter available memory"
-                        {...formik.getFieldProps('dynamicParams.availableMemory')}
-                      />
-                    </Form.Group>
-                  </Col>
+                  
                   <Col md={4}>
                     <Form.Group className="mb-3" controlId="max_available_memory">
                       <Form.Label>Maximum Available Memory</Form.Label>
@@ -278,16 +336,7 @@ const StoreDevice = ({ state }) => {
                       />
                     </Form.Group>
                   </Col>
-                  <Col md={4}>
-                    <Form.Group className="mb-3" controlId="cpu_usage">
-                      <Form.Label>CPU Usage</Form.Label>
-                      <Form.Control
-                        type="number"
-                        placeholder="Enter CPU usage"
-                        {...formik.getFieldProps('dynamicParams.cpuUsage')}
-                      />
-                    </Form.Group>
-                  </Col>
+                  
                   <Col md={4}>
                     <Form.Group className="mb-3" controlId="max_cpu_usage">
                       <Form.Label>Maximum CPU Usage</Form.Label>
@@ -295,6 +344,55 @@ const StoreDevice = ({ state }) => {
                         type="number"
                         placeholder="Enter maximum CPU usage"
                         {...formik.getFieldProps('dynamicParams.maxCpuUsage')}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+
+                <Row>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="min_cpu_percentage">
+                      <Form.Label>Minimum CPU Percentage</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter minimum CPU Percentage"
+                        {...formik.getFieldProps('dynamicParams.minCpuPercentage')}
+                      />
+                    </Form.Group>
+                  </Col>
+                  
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="max_cpu_percentage">
+                      <Form.Label>Maximum CPU Percentage</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter maximum CPU Percentage"
+                        {...formik.getFieldProps('dynamicParams.maxCpuPercentage')}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="min_network_bandwidth">
+                      <Form.Label>Minimum Network Bandwidth</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter minimum Network Bandwidth"
+                        {...formik.getFieldProps('dynamicParams.minNetworkBandwidth')}
+                      />
+                    </Form.Group>
+                  </Col>
+                  
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="max_network_bandwidth">
+                      <Form.Label>Maximum Network Bandwidth</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter maximum Network Bandwidth"
+                        {...formik.getFieldProps('dynamicParams.maxNetworkBandwidth')}
                       />
                     </Form.Group>
                   </Col>
