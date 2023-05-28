@@ -1,0 +1,22 @@
+{
+  "deviceId": "0x987654",
+  "staticParams": {
+    "networkInterface": "eth2",
+    "hostname": "device3",
+    "osArchitecture": "aarch64",
+    "logicalCPU": "2",
+    "osPlatform": "macOS",
+    "osVersion": "11.4",
+    "osRelease": "MacOS Big Sur",
+    "macAddress": "11:22:33:44:55:66",
+    "firmwareVersion": "3.2.0",
+    "userPassPhrase": "mySecurePassword123",
+    "uuID": "987654321"
+  },
+  "dynamicParams": {
+    "availableMemory": 600,
+    "cpuUsage": 25,
+    "cpuPercentage": 25,
+    "networkBandwidth": 200
+  }
+}

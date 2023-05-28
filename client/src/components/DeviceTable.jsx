@@ -1,11 +1,13 @@
 import React, { useState } from "react"
 import { ethers } from "ethers"
-import { Button, Table } from "react-bootstrap"
+import { Button, Table, Spinner, Alert } from "react-bootstrap"
 import Form from "react-bootstrap/Form"
 
 const DeviceTable = ({ state }) => {
   const [devices, setDevices] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [submitting, setSubmitting] = useState(false) // New state for submit operation
+  const [error, setError] = useState("") // New state for error message
 
   const handleUpload = (e) => {
     const file = e.target.files[0]
@@ -22,30 +24,10 @@ const DeviceTable = ({ state }) => {
     setDevices(devices.filter((device) => device.deviceId !== deviceId))
   }
 
-  // const storeDevices = async () => {
-  //   setIsLoading(true);
-  //   for (const device of devices) {
-  //     let device_id_byte = ethers.utils.formatBytes32String(device.deviceId);
-  //     console.error(`Contract ==> ${state.contract}`);
-
-  //     let static_device = {
-  //       networkInterface: device.staticParams.networkInterface,
-  //       hostname: device.staticParams.hostname,
-  //     };
-
-  //     if (state.contract && state.contract.storeDevice) {
-  //       let transaction = await state.contract.storeDevice(device_id_byte, static_device);
-  //       await transaction.wait();
-  //       console.log("Transaction is done");
-  //     } else {
-  //       console.error("Contract or storeDevice function is not available");
-  //     }
-  //   }
-  //   setIsLoading(false);
-  // };
-
   const storeDevices = async () => {
+    setSubmitting(true)
     setIsLoading(true)
+    setError("") // Clear previous error message
 
     const deviceIds = devices.map((device) =>
       ethers.utils.formatBytes32String(device.deviceId)
@@ -54,27 +36,36 @@ const DeviceTable = ({ state }) => {
     const dynamicParams = devices.map((device) => device.dynamicParams)
 
     if (state.contract && state.contract.storeDevices) {
-      let transaction = await state.contract.storeDevices(
-        deviceIds,
-        staticParams,
-        dynamicParams
-      )
-      await transaction.wait()
-      console.log("Transaction is done")
+      try {
+        let transaction = await state.contract.storeDevices(
+          deviceIds,
+          staticParams,
+          dynamicParams
+        )
+        await transaction.wait()
+        console.log("Transaction is done")
+      } catch (err) {
+        setError("Device ID already exists")
+        setIsLoading(false)
+        setSubmitting(false)
+        return
+      }
     } else {
       console.error("Contract or storeDevices function is not available")
     }
 
     setIsLoading(false)
+    setSubmitting(false)
   }
 
   const handleSubmit = () => {
-    if (isLoading) return
+    if (isLoading || submitting) return
     storeDevices()
   }
 
   return (
     <div>
+      {error && <Alert variant="danger">{error}</Alert>}
       <Form.Group controlId="formFile" className="mb-3">
         <Form.Label>Default file input example</Form.Label>
         <Form.Control type="file" onChange={handleUpload} accept=".json" />
@@ -144,7 +135,14 @@ const DeviceTable = ({ state }) => {
         </Table>
       </div>
 
-      <Button variant="primary" disabled={isLoading} onClick={handleSubmit}>
+      <Button
+        variant="primary"
+        disabled={isLoading || submitting}
+        onClick={handleSubmit}
+      >
+        {submitting ? (
+          <Spinner animation="border" size="sm" className="mr-2" />
+        ) : null}
         Submit
       </Button>
     </div>
